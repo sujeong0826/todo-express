@@ -41,4 +41,20 @@ app.get("/tasks", (_req, res) => {
     });
 });
 
+app.delete("/tasks", (req, res) => {
+  console.log(req.params);
+  var taskId = req.query.id;
+  database.models.Task.destroy({
+    where: { id: taskId }
+  })
+    .then(result => {
+      console.log("deleted! " + result);
+      res.sendStatus(200).send(result);
+    })
+    .catch(err => {
+      res.sendStatus(400);
+      console.log("Failed to delete data", err);
+    });
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
